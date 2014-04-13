@@ -3,6 +3,7 @@
 Functions to create functions and evaluate expressions.
 
 [![NPM version](https://badge.fury.io/js/eva.png)](http://badge.fury.io/js/eva)
+[![Build Status](https://travis-ci.org/gamtiq/eva.png)](https://travis-ci.org/gamtiq/eva)
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 ## Installation
