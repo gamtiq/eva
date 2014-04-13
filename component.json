@@ -1,0 +1,24 @@
+{
+  "name": "eva",
+  "repo": "gamtiq/eva",
+  "description": "Functions to create functions and evaluate expressions",
+  "version": "0.0.1",
+  "keywords": [
+    "create",
+    "function",
+    "dynamic",
+    "eval",
+    "evaluate",
+    "expression",
+    "execute",
+    "delegate",
+    "method"
+  ],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "main": "src/eva.js",
+  "scripts": [
+    "src/eva.js"
+  ]
+}

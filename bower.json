@@ -1,0 +1,32 @@
+{
+  "name": "eva",
+  "main": [
+    "dist/eva.js", 
+    "dist/eva.min.js"
+  ],
+  "version": "0.0.1",
+  "homepage": "https://github.com/gamtiq/eva",
+  "authors": [
+    "Denis Sikuler"
+  ],
+  "description": "Functions to create functions and evaluate expressions",
+  "keywords": [
+    "create",
+    "function",
+    "dynamic",
+    "eval",
+    "evaluate",
+    "expression",
+    "execute",
+    "delegate",
+    "method"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
