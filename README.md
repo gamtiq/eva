@@ -1,6 +1,6 @@
 # eva
 
-Functions to create functions and evaluate expressions.
+Functions to create and call functions and evaluate expressions.
 
 [![NPM version](https://badge.fury.io/js/eva.png)](http://badge.fury.io/js/eva)
 [![Build Status](https://travis-ci.org/gamtiq/eva.png)](https://travis-ci.org/gamtiq/eva)
@@ -81,6 +81,9 @@ console.log( eva.evalWith("fn(this.expr)", {expr: "Math.sin(0)"}, {fn: eva.evalW
 var obj = {};
 eva.createDelegateMethod(eva, "evalWith", {destination: obj, destinationMethod: "expr"});
 console.log( obj.expr("Math.cos(0)") );   // 1
+
+func = eva.closure(eva.evalWith, ["this.a * this.b", {a: 4, b: 7}]);
+console.log( func() );   // 28
 ```
 
 ## API
@@ -96,6 +99,10 @@ Calculate/evaluate value of specified expression using given context and scope.
 ### createDelegateMethod(delegate: Object, method: String, [settings: Object]): Function
 
 Create function that executes specified method of the given object.
+
+### closure(action: Function, [paramList: Array], [context: Object]): Function
+
+Create function that executes specified function with given parameters and context and returns result of call.
 
 See `doc` folder for details.
 

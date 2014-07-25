@@ -3,7 +3,8 @@
 
 // Tests for eva
 describe("eva", function() {
-    var expect, eva, undef;
+    var global = (function() {return this;}).call(null),
+        expect, eva, undef;
     
     // node
     if (typeof chai === "undefined") {
@@ -527,6 +528,64 @@ describe("eva", function() {
                     .equal(80);
                 expect( target.value )
                     .equal(100);
+            });
+        });
+    });
+    
+    
+    describe(".closure", function() {
+        function sum() {
+            /*jshint validthis:true*/
+            var result = this === global || typeof this.initValue !== "number" ? 0 : this.initValue,
+                nL = arguments.length,
+                nI;
+            if (nL) {
+                for (nI = 0; nI < nL; nI++) {
+                    result += arguments[nI];
+                }
+            }
+            return result;
+        }
+        
+        function check(result, action, paramList, context) {
+            var argList = [action],
+                func;
+            if (paramList) {
+                argList.push(paramList);
+            }
+            if (context) {
+                argList.push(context);
+            }
+            func = closure.apply(null, argList);
+            expect(func)
+                .a("function");
+            expect(func())
+                .eql(result);
+        }
+        
+        var closure = eva.closure;
+        
+        describe("closure(func)", function() {
+            it("should create function that call the specified function", function() {
+                check(0, sum);
+                check(expect(), expect);
+            });
+        });
+        
+        describe("closure(func, paramList)", function() {
+            it("should create function that call the specified function with given parameters", function() {
+                check(9, sum, [1, 8]);
+                check(1111, sum, [1, 10, 100, 1000]);
+                check(28, eva.evalWith, ["this.a * this.b", {a: 4, b: 7}]);
+                check(expect("abc"), expect, ["abc"]);
+                check(expect(eva), expect, [eva]);
+            });
+        });
+        
+        describe("closure(func, paramList, context)", function() {
+            it("should create function that call the specified function with given parameters and context", function() {
+                check(20, sum, [1, 8], {initValue: 11});
+                check(100, sum, [2, 31, 40, 17], {initValue: 10});
             });
         });
     });

@@ -8,7 +8,7 @@
 
 
 /**
- * Functions to create functions and evaluate expressions.
+ * Functions to create and call functions and evaluate expressions.
  * 
  * @module eva
  */
@@ -111,11 +111,32 @@ function createDelegateMethod(delegate, sMethod, settings) {
     return result;
 }
 
+/**
+ * Create function that executes specified function with given parameters and context and returns result of call.
+ * 
+ * @param {Function} action
+ *      Function that will be executed when created function is called.
+ * @param {Array} [paramList]
+ *      Parameters that should be passed into the function specified in `action` argument.
+ * @param {Object} [context]
+ *     Object that will be used as `this` value when calling the function specified in `action` argument.
+ *     Default value is `null`.
+ * @return {Function}
+ *      Created function.
+ * @alias module:eva.closure
+ */
+function closure(action, paramList, context) {
+    return function() {
+        return action.apply(context || null, paramList || []);
+    };
+}
+
 
 // Exports
 
 module.exports = {
     createFunction: createFunction,
     evalWith: evalWith,
-    createDelegateMethod: createDelegateMethod
+    createDelegateMethod: createDelegateMethod,
+    closure: closure
 };
