@@ -45,7 +45,9 @@
     "expression",
     "execute",
     "delegate",
-    "method"
+    "method",
+    "closure",
+    "map"
   ],
   "jam": {
     "main": "dist/eva.js",
@@ -57,5 +59,11 @@
   },
   "categories": [
     "Utilities"
-  ]
+  ],
+  "spm": {
+    "main": "src/eva.js",
+    "engines": {
+      "seajs": "2.2.1"
+    }
+  }
 }

@@ -19,7 +19,9 @@
     "expression",
     "execute",
     "delegate",
-    "method"
+    "method",
+    "closure",
+    "map"
   ],
   "license": "MIT",
   "ignore": [

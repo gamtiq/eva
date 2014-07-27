@@ -24,13 +24,17 @@ Functions to create and call functions and evaluate expressions.
 
     bower install eva
 
+### [SPM](http://spmjs.io)
+
+    spm install eva
+
 ### AMD, &lt;script&gt;
 
 Use `dist/eva.js` or `dist/eva.min.js` (minified version).
 
 ## Usage
 
-### Node, Component
+### Node, Component, SPM
 
 ```js
 var eva = require("eva");

@@ -12,7 +12,9 @@
     "expression",
     "execute",
     "delegate",
-    "method"
+    "method",
+    "closure",
+    "map"
   ],
   "dependencies": {},
   "development": {},
