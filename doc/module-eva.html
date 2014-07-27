@@ -125,7 +125,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="closure"><span class="type-signature">&lt;static> </span>closure<span class="signature">(action, <span class="optional">paramList</span>, <span class="optional">context</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id="closure"><span class="type-signature">&lt;static> </span>closure<span class="signature">(action, <span class="optional">paramList</span>, <span class="optional">context</span>, <span class="optional">settings</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
     
     
 </dt>
@@ -193,7 +193,7 @@
 
             
 
-            <td class="description last"><p>Function that will be executed when created function is called.</p></td>
+            <td class="description last"><p>Target function that will be executed when created function is called.</p></td>
         </tr>
 
 	
@@ -226,7 +226,7 @@
 
             
 
-            <td class="description last"><p>Parameters that should be passed into the function specified in <code>action</code> argument.</p></td>
+            <td class="description last"><p>Parameters that should be passed into the target function specified in <code>action</code> argument.</p></td>
         </tr>
 
 	
@@ -259,8 +259,51 @@
 
             
 
-            <td class="description last"><p>Object that will be used as <code>this</code> value when calling the function specified in <code>action</code> argument.
+            <td class="description last"><p>Object that will be used as <code>this</code> value when calling the target function specified in <code>action</code> argument.
     Default value is <code>null</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>settings</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Operation settings. Keys are settings names, values are corresponding settings values.
+    The following settings are supported:</p>
+<ul>
+<li><code>ignoreArgs</code>: <code>Boolean</code> - Whether arguments passed into the created function should be ignored.
+Default value is <code>false</code> and means that arguments will be included in parameters list for the target function
+depending of the value of <code>prependArgs</code> setting.</li>
+<li><code>prependArgs</code>: <code>Boolean</code> - Whether arguments passed into the created function should be passed into the target function
+before parameters specified in <code>paramList</code> argument. Default value is <code>false</code> and means that parameters list
+for the target function will contain values from <code>paramList</code> argument followed by arguments passed into the created function
+(this is similar to <code>Function.prototype.bind</code> behavior).</li>
+</ul></td>
         </tr>
 
 	
@@ -292,7 +335,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="eva.js.html">eva.js</a>, <a href="eva.js.html#sunlight-1-line-128">line 128</a>
+        <a href="eva.js.html">eva.js</a>, <a href="eva.js.html#sunlight-1-line-139">line 139</a>
     </li></ul></dd>
     
 
@@ -978,6 +1021,224 @@
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="map"><span class="type-signature">&lt;static> </span>map<span class="signature">(funcList, <span class="optional">paramList</span>, <span class="optional">context</span>)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Call each function from specified list and return array containing results of calls.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>funcList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Target functions that should be called.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>paramList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Parameters that should be passed into each target function.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Object that will be used as <code>this</code> value when calling each target function.
+    Default value is <code>null</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="eva.js.html">eva.js</a>, <a href="eva.js.html#sunlight-1-line-178">line 178</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Results of functions calling.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
         </dl>
     
 
@@ -1004,7 +1265,7 @@
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a>
-		on Fri Jul 25 2014 23:32:05 GMT+0400 (MSK) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sun Jul 27 2014 19:29:33 GMT+0400 (MSK) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

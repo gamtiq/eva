@@ -538,16 +538,26 @@ describe("eva", function() {
             /*jshint validthis:true*/
             var result = this === global || typeof this.initValue !== "number" ? 0 : this.initValue,
                 nL = arguments.length,
-                nI;
+                nI, value;
             if (nL) {
-                for (nI = 0; nI < nL; nI++) {
-                    result += arguments[nI];
+                nI = 0;
+                value = arguments[0];
+                // Dirty check of array
+                if (typeof value.length === "number" && typeof value.splice === "function") {
+                    result += sum.apply(this, value);
+                    nI = 1;
+                }
+                while (nI < nL) {
+                    value = arguments[nI++];
+                    if (typeof value === "number") {
+                        result += value;
+                    }
                 }
             }
             return result;
         }
         
-        function check(result, action, paramList, context) {
+        function check(result, action, paramList, context, settings, funcArgs) {
             var argList = [action],
                 func;
             if (paramList) {
@@ -556,10 +566,13 @@ describe("eva", function() {
             if (context) {
                 argList.push(context);
             }
+            if (settings) {
+                argList.push(settings);
+            }
             func = closure.apply(null, argList);
             expect(func)
                 .a("function");
-            expect(func())
+            expect(func.apply(null, funcArgs || []))
                 .eql(result);
         }
         
@@ -584,8 +597,94 @@ describe("eva", function() {
         
         describe("closure(func, paramList, context)", function() {
             it("should create function that call the specified function with given parameters and context", function() {
-                check(20, sum, [1, 8], {initValue: 11});
+                check(20, sum, [1, 8, [-1, -7]], {initValue: 11});
                 check(100, sum, [2, 31, 40, 17], {initValue: 10});
+            });
+        });
+        
+        describe("closure(func, paramList, context, {ignoreArgs: true})", function() {
+            it("should create function that call the specified function with given parameters and context and ignore specified arguments", function() {
+                var settings = {ignoreArgs: true};
+                check(5, sum, [2, 3], {}, settings, [100, 200, 300]);
+                check(85, sum, [1, 11, 53, 10], {initValue: 10}, settings, [-100, -5]);
+            });
+        });
+        
+        describe("closure(func, paramList, context, {prependArgs: true})", function() {
+            it("should create function that call the specified function with given parameters and context and pass arguments before parameters", function() {
+                var settings = {prependArgs: true};
+                check(1500, sum, [-100, 1], {}, settings, [[1000, 99, 500]]);
+                check(22, sum, [5, 100], {initValue: 22}, settings, [-100, -5]);
+            });
+        });
+    });
+    
+    
+    describe(".map", function() {
+        function getValue(value) {
+            return function() {
+                return value;
+            };
+        }
+        
+        function sum() {
+            /*jshint validthis:true*/
+            var nR = this === global || typeof this.initValue !== "number" ? 0 : this.initValue;
+            for (var nI = 0, nL = arguments.length; nI < nL; nI++) {
+                nR += arguments[nI];
+            }
+            return nR;
+        }
+        
+        function mult() {
+            /*jshint validthis:true*/
+            var nR = this === global || typeof this.initValue !== "number" ? 1 : this.initValue;
+            for (var nI = 0, nL = arguments.length; nI < nL; nI++) {
+                nR *= arguments[nI];
+            }
+            return nR;
+        }
+        
+        function max() {
+            return Math.max.apply(null, arguments);
+        }
+        
+        function min() {
+            return Math.min.apply(null, arguments);
+        }
+        
+        function check(result, funcList, paramList, context) {
+            var argList = [funcList];
+            if (paramList) {
+                argList.push(paramList);
+            }
+            if (context) {
+                argList.push(context);
+            }
+            expect(map.apply(null, argList))
+                .eql(result);
+        }
+        
+        var map = eva.map;
+        
+        describe("map(funcList)", function() {
+            it("should return results of calling of each function", function() {
+                check([1, "abc", eva], [getValue(1), getValue("abc"), getValue(eva)]);
+                check([getValue, expect, null, check], [getValue(getValue), getValue(expect), getValue(null), getValue(check)]);
+            });
+        });
+        
+        describe("map(funcList, paramList)", function() {
+            it("should return results of calling of each function with specified parameters", function() {
+                check([7, 10], [sum, mult], [2, 5]);
+                check([5, 3360, 7, -8], [sum, mult, max, min], [-3, 7, 4, -8, 5]);
+            });
+        });
+        
+        describe("map(funcList, paramList, context)", function() {
+            it("should return results of calling of each function with specified parameters and context", function() {
+                check([20, 210], [sum, mult], [3, 7], {initValue: 10});
+                check([7, -240], [sum, mult], [1, 2, 3, 4, -5], {initValue: 2});
             });
         });
     });

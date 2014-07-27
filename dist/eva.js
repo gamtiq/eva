@@ -130,20 +130,80 @@
      * Create function that executes specified function with given parameters and context and returns result of call.
      * 
      * @param {Function} action
-     *      Function that will be executed when created function is called.
+     *      Target function that will be executed when created function is called.
      * @param {Array} [paramList]
-     *      Parameters that should be passed into the function specified in `action` argument.
+     *      Parameters that should be passed into the target function specified in `action` argument.
      * @param {Object} [context]
-     *     Object that will be used as `this` value when calling the function specified in `action` argument.
+     *     Object that will be used as `this` value when calling the target function specified in `action` argument.
      *     Default value is `null`.
+     * @param {Object} [settings]
+     *     Operation settings. Keys are settings names, values are corresponding settings values.
+     *     The following settings are supported:
+     *     
+     *   * `ignoreArgs`: `Boolean` - Whether arguments passed into the created function should be ignored.
+     *     Default value is `false` and means that arguments will be included in parameters list for the target function
+     *     depending of the value of `prependArgs` setting.
+     *   * `prependArgs`: `Boolean` - Whether arguments passed into the created function should be passed into the target function
+     *     before parameters specified in `paramList` argument. Default value is `false` and means that parameters list
+     *     for the target function will contain values from `paramList` argument followed by arguments passed into the created function
+     *     (this is similar to `Function.prototype.bind` behavior).
      * @return {Function}
      *      Created function.
      * @alias module:eva.closure
      */
-    function closure(action, paramList, context) {
+    function closure(action, paramList, context, settings) {
+        if (! settings) {
+            settings = {};
+        }
+        var bUseArgs = ! settings.ignoreArgs,
+            bAppendArgs = ! settings.prependArgs;
+        
         return function() {
-            return action.apply(context || null, paramList || []);
+            var params;
+            if (bUseArgs) {
+                params = paramList ? paramList.slice(0) : [];
+                if (bAppendArgs) {
+                    params.push.apply(params, arguments);
+                }
+                else {
+                    params = Array.prototype.slice.call(arguments, 0).concat(params);
+                }
+            }
+            else {
+                params = paramList || [];
+            }
+            return action.apply(context || null, params);
         };
+    }
+
+    /**
+     * Call each function from specified list and return array containing results of calls.
+     * 
+     * @param {Array} funcList
+     *      Target functions that should be called.
+     * @param {Array} [paramList]
+     *      Parameters that should be passed into each target function.
+     * @param {Object} [context]
+     *     Object that will be used as `this` value when calling each target function.
+     *     Default value is `null`.
+     * @return {Array}
+     *      Results of functions calling.
+     * @alias module:eva.closure
+     */
+    function map(funcList, paramList, context) {
+        var result = [],
+            nL = funcList.length,
+            nI;
+        if (! paramList) {
+            paramList = [];
+        }
+        if (! context) {
+            context = null;
+        }
+        for (nI = 0; nI < nL; nI++) {
+            result[nI] = funcList[nI].apply(context, paramList);
+        }
+        return result;
     }
 
 
@@ -153,7 +213,8 @@
         createFunction: createFunction,
         evalWith: evalWith,
         createDelegateMethod: createDelegateMethod,
-        closure: closure
+        closure: closure,
+        map: map
     };
 
     return module.exports;

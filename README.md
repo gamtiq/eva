@@ -82,8 +82,16 @@ var obj = {};
 eva.createDelegateMethod(eva, "evalWith", {destination: obj, destinationMethod: "expr"});
 console.log( obj.expr("Math.cos(0)") );   // 1
 
-func = eva.closure(eva.evalWith, ["this.a * this.b", {a: 4, b: 7}]);
-console.log( func() );   // 28
+func = eva.closure(eva.evalWith, ["this.a * this.b"]);
+console.log( func({a: 4, b: 7}) );   // 28
+console.log( func({a: -3, b: 5}) );   // -15
+            
+var funcList = [
+    eva.closure(eva.evalWith, ["this.a + this.b"]),
+    eva.closure(eva.evalWith, ["this.a * this.b"]),
+    eva.closure(eva.evalWith, ["Math.max(this.a, this.b)"])
+];
+console.log( eva.map(funcList, [{a: 2, b: -7}]) );   // [-5, -14, 2]
 ```
 
 ## API
@@ -100,9 +108,13 @@ Calculate/evaluate value of specified expression using given context and scope.
 
 Create function that executes specified method of the given object.
 
-### closure(action: Function, [paramList: Array], [context: Object]): Function
+### closure(action: Function, [paramList: Array], [context: Object], [settings: Object]): Function
 
 Create function that executes specified function with given parameters and context and returns result of call.
+
+### map(funcList: Array, [paramList: Array], [context: Object]): Array
+
+Call each function from specified list and return array containing results of calls.
 
 See `doc` folder for details.
 
