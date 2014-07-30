@@ -576,6 +576,10 @@ describe("eva", function() {
                 .eql(result);
         }
         
+        function getArguments() {
+            return arguments;
+        }
+        
         var closure = eva.closure;
         
         describe("closure(func)", function() {
@@ -592,6 +596,9 @@ describe("eva", function() {
                 check(28, eva.evalWith, ["this.a * this.b", {a: 4, b: 7}]);
                 check(expect("abc"), expect, ["abc"]);
                 check(expect(eva), expect, [eva]);
+                
+                check(0, sum, getArguments());
+                check(-1, sum, getArguments(3, -5, 1));
             });
         });
         
@@ -607,6 +614,9 @@ describe("eva", function() {
                 var settings = {ignoreArgs: true};
                 check(5, sum, [2, 3], {}, settings, [100, 200, 300]);
                 check(85, sum, [1, 11, 53, 10], {initValue: 10}, settings, [-100, -5]);
+                
+                check(101, sum, getArguments(1, 7, 50, 43), {}, settings, [10, 2, 7, 2, -99]);
+                check(-50, sum, getArguments(5, -10, -15), {initValue: -30}, settings, [1, 10, 100]);
             });
         });
         

@@ -117,7 +117,7 @@ function createDelegateMethod(delegate, sMethod, settings) {
  * @param {Function} action
  *      Target function that will be executed when created function is called.
  * @param {Array} [paramList]
- *      Parameters that should be passed into the target function specified in `action` argument.
+ *      Array-like object representing parameters that should be passed into the target function specified in `action` argument.
  * @param {Object} [context]
  *     Object that will be used as `this` value when calling the target function specified in `action` argument.
  *     Default value is `null`.
@@ -146,7 +146,7 @@ function closure(action, paramList, context, settings) {
     return function() {
         var params;
         if (bUseArgs) {
-            params = paramList ? paramList.slice(0) : [];
+            params = paramList ? Array.prototype.slice.call(paramList, 0) : [];
             if (bAppendArgs) {
                 params.push.apply(params, arguments);
             }
