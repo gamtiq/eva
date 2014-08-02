@@ -637,6 +637,20 @@ describe("eva", function() {
             };
         }
         
+        function getParamList() {
+            var paramList = arguments;
+            return function() {
+                return paramList;
+            };
+        }
+        
+        function getExtParamList() {
+            var paramList = Array.prototype.slice.call(arguments, 0);
+            return function(func, index, funcList) {
+                return paramList.concat(index, funcList.length);
+            };
+        }
+        
         function sum() {
             /*jshint validthis:true*/
             var nR = this === global || typeof this.initValue !== "number" ? 0 : this.initValue;
@@ -663,13 +677,16 @@ describe("eva", function() {
             return Math.min.apply(null, arguments);
         }
         
-        function check(result, funcList, paramList, context) {
+        function check(result, funcList, paramList, context, settings) {
             var argList = [funcList];
             if (paramList) {
                 argList.push(paramList);
             }
             if (context) {
                 argList.push(context);
+            }
+            if (settings) {
+                argList.push(settings);
             }
             expect(map.apply(null, argList))
                 .eql(result);
@@ -688,13 +705,36 @@ describe("eva", function() {
             it("should return results of calling of each function with specified parameters", function() {
                 check([7, 10], [sum, mult], [2, 5]);
                 check([5, 3360, 7, -8], [sum, mult, max, min], [-3, 7, 4, -8, 5]);
+                
+                check([-7, 14], [min, max], getParamList(3, -7, 9, 14, -5, 8));
+                check([12, 32], [sum, mult], getExtParamList(2, 8));
             });
         });
         
         describe("map(funcList, paramList, context)", function() {
             it("should return results of calling of each function with specified parameters and context", function() {
+                function getContext(func, index, funcList) {
+                    return {initValue: index + funcList.length};
+                }
+                
                 check([20, 210], [sum, mult], [3, 7], {initValue: 10});
                 check([7, -240], [sum, mult], [1, 2, 3, 4, -5], {initValue: 2});
+                
+                check([12, -540], [sum, mult], getParamList(3, -3, 5, 4), getValue({initValue: 3}));
+                check([7, -18], [sum, mult], getExtParamList(-1, 1, 3), getContext);
+            });
+        });
+        
+        describe("map(funcList, paramList, funcContext, {funcContext: true})", function() {
+            it("should return results of calling of each function with specified parameters and context", function() {
+                function context() {
+                }
+                context.initValue = 2;
+                
+                var settings = {funcContext: true};
+                
+                check([3, -0], [sum, mult], getParamList(1, -1, 1, 0), context, settings);
+                check([5, 240], [sum, mult], getParamList(1, -2, 3, -4, 5), context, settings);
             });
         });
     });

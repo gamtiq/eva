@@ -89,7 +89,11 @@ console.log( obj.expr("Math.cos(0)") );   // 1
 func = eva.closure(eva.evalWith, ["this.a * this.b"]);
 console.log( func({a: 4, b: 7}) );   // 28
 console.log( func({a: -3, b: 5}) );   // -15
-            
+
+func = eva.closure(eva.evalWith, [{a: 3, b: -9}], null, {prependArgs: true});
+console.log( func("this.a + this.b") );   // -6
+console.log( func("this.a - this.b") );   // 12
+
 var funcList = [
     eva.closure(eva.evalWith, ["this.a + this.b"]),
     eva.closure(eva.evalWith, ["this.a * this.b"]),
@@ -116,7 +120,7 @@ Create function that executes specified method of the given object.
 
 Create function that executes specified function with given parameters and context and returns result of call.
 
-### map(funcList: Array, [paramList: Array], [context: Object]): Array
+### map(funcList: Array, [paramList: Array | Function], [context: Object | Function], [settings: Object]): Array
 
 Call each function from specified list and return array containing results of calls.
 

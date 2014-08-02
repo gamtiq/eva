@@ -166,27 +166,53 @@ function closure(action, paramList, context, settings) {
  * 
  * @param {Array} funcList
  *      Target functions that should be called.
- * @param {Array} [paramList]
+ * @param {Array | Function} [paramList]
  *      Parameters that should be passed into each target function.
- * @param {Object} [context]
+ *      If function is specified it should return array that will be used as parameters for target functions.
+ *      The following parameters will be passed into the function:
+ *     
+ *   * a target function for which parameters list should be returned
+ *   * index of the target function
+ *   * array of all target functions
+ * @param {Object | Function} [context]
  *     Object that will be used as `this` value when calling each target function.
  *     Default value is `null`.
+ *     If function is specified it should return object that will be used as `this` value.
+ *     Parameters of the function are equal to parameters of `paramList` function (see above).
+ * @param {Object} [settings]
+ *     Operation settings. Keys are settings names, values are corresponding settings values.
+ *     The following settings are supported:
+ *     
+ *   * `funcContext`: `Boolean` - Whether function that is specified as `context` parameter should be used directly
+ *     as `this` value. Default value is `false`.
  * @return {Array}
  *      Results of functions calling.
  * @alias module:eva.map
  */
-function map(funcList, paramList, context) {
+function map(funcList, paramList, context, settings) {
+    /*jshint laxbreak:true*/
     var result = [],
         nL = funcList.length,
-        nI;
+        bGetContext, bGetParamList, func, nI;
     if (! paramList) {
         paramList = [];
     }
     if (! context) {
         context = null;
     }
+    if (! settings) {
+        settings = {};
+    }
+    bGetContext = typeof context === "function" && ! settings.funcContext;
+    bGetParamList = typeof paramList === "function";
     for (nI = 0; nI < nL; nI++) {
-        result[nI] = funcList[nI].apply(context, paramList);
+        func = funcList[nI];
+        result[nI] = func.apply(bGetContext
+                                    ? context(func, nI, funcList)
+                                    : context, 
+                                bGetParamList
+                                    ? paramList(func, nI, funcList)
+                                    : paramList);
     }
     return result;
 }
