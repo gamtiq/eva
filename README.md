@@ -126,6 +126,11 @@ Call each function from specified list and return array containing results of ca
 
 See `doc` folder for details.
 
+## Related projects
+
+* [adam](https://github.com/gamtiq/adam)
+* [teo](https://github.com/gamtiq/teo)
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 Add unit tests for any new or changed functionality.

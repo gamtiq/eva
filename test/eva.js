@@ -1,5 +1,5 @@
 "use strict";
-/*global afterEach, chai, describe, it, window*/
+/*global after, afterEach, before, chai, describe, it, window*/
 
 // Tests for eva
 describe("eva", function() {
@@ -288,6 +288,54 @@ describe("eva", function() {
                 func = createFunction("param > a ? a : b", {scope: true, paramNames: "space, a, b", expression: true});
                 expect( func.bind(null, {a: 1, prm: 5}) )
                     .Throw(ReferenceError);
+            });
+        });
+        
+        describe("createFunction(sCode, {debug: true})", function() {
+            var consoleLog, logData;
+            
+            function saveLog() {
+                logData = Array.prototype.slice.call(arguments);
+                consoleLog.apply(console, arguments);
+            }
+            
+            before(function() {
+                consoleLog = console.log;
+                console.log = saveLog;
+            });
+            
+            after(function() {
+                console.log = consoleLog;
+            });
+            
+            function check(sCode, sMessage) {
+                /*jshint expr:true*/
+                var settings = {debug: true};
+                if (sMessage) {
+                    settings.debugMessage = sMessage;
+                }
+                expect( createFunction(sCode, settings)() )
+                    .be["undefined"];
+                expect(logData)
+                    .an("array");
+                expect(logData)
+                    .length(2);
+                expect(logData[0])
+                    .equal(sMessage || "Error in created function:");
+                expect(logData[1])
+                    .instanceOf(Error);
+                logData = null;
+            }
+            
+            it("should log data about error into console", function() {
+                check("abc.def");
+            });
+            
+            describe("createFunction(sCode, {debug: true, debugMessage: 'Some message'})", function() {
+                it("should log data about error into console using specified message at the beginning", function() {
+                    /*jshint quotmark:false*/
+                    check("writeSomewhere(-something.really.good);", 'Something "awful" is happened - ');
+                });
             });
         });
     });
