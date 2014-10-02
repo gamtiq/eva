@@ -3,7 +3,8 @@
 
 // Tests for eva
 describe("eva", function() {
-    var global = (function() {return this;}).call(null),
+    var evalRef = (1, eval),
+        global = evalRef("this"),
         expect, eva, undef;
     
     // node
@@ -338,6 +339,44 @@ describe("eva", function() {
                 });
             });
         });
+        
+        describe("createFunction(sCode, {debug: true, debugFunc: 'expression'})", function() {
+            var errorData;
+            
+            function saveErrorData() {
+                errorData = Array.prototype.slice.call(arguments);
+            }
+            
+            before(function() {
+                global.simpleErrorHandler = {
+                    process: saveErrorData
+                };
+            });
+            
+            after(function() {
+                delete global.simpleErrorHandler;
+            });
+            
+            function check(sCode, sDebugFunc) {
+                /*jshint expr:true*/
+                var settings = {debug: true, debugFunc: sDebugFunc || "simpleErrorHandler.process"};
+                expect( createFunction(sCode, settings)() )
+                    .be["undefined"];
+                expect(errorData)
+                    .an("array");
+                expect(errorData)
+                    .length(2);
+                expect(errorData[0])
+                    .equal("Error in created function:");
+                expect(errorData[1])
+                    .instanceOf(Error);
+                errorData = null;
+            }
+            
+            it("should pass data about error into specified function", function() {
+                check("x.y.z()");
+            });
+        });
     });
     
     
@@ -583,8 +622,8 @@ describe("eva", function() {
     
     describe(".closure", function() {
         function sum() {
-            /*jshint validthis:true*/
-            var result = this === global || typeof this.initValue !== "number" ? 0 : this.initValue,
+            /*jshint eqeqeq:false, eqnull:true, validthis:true*/
+            var result = this === global || this == null || typeof this.initValue !== "number" ? 0 : this.initValue,
                 nL = arguments.length,
                 nI, value;
             if (nL) {
@@ -700,8 +739,8 @@ describe("eva", function() {
         }
         
         function sum() {
-            /*jshint validthis:true*/
-            var nR = this === global || typeof this.initValue !== "number" ? 0 : this.initValue;
+            /*jshint eqeqeq:false, eqnull:true, validthis:true*/
+            var nR = this === global || this == null || typeof this.initValue !== "number" ? 0 : this.initValue;
             for (var nI = 0, nL = arguments.length; nI < nL; nI++) {
                 nR += arguments[nI];
             }
@@ -709,8 +748,8 @@ describe("eva", function() {
         }
         
         function mult() {
-            /*jshint validthis:true*/
-            var nR = this === global || typeof this.initValue !== "number" ? 1 : this.initValue;
+            /*jshint eqeqeq:false, eqnull:true, validthis:true*/
+            var nR = this === global || this == null || typeof this.initValue !== "number" ? 1 : this.initValue;
             for (var nI = 0, nL = arguments.length; nI < nL; nI++) {
                 nR *= arguments[nI];
             }
