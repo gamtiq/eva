@@ -2,7 +2,7 @@
   "name": "eva",
   "repo": "gamtiq/eva",
   "description": "Functions to create functions and evaluate expressions",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "create",
     "function",

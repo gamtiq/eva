@@ -1,3 +1,7 @@
+### 0.1.2 / 2014-10-02
+
+* add `debug`, `debugFunc` and `debugMessage` settings for `createFunction` method
+ 
 ### 0.1.1 / 2014-08-02
 
 * add ability to pass `arguments` object as value for `paramList` parameter of `closure` method

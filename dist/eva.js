@@ -45,11 +45,11 @@
      *      when `true` value is specified (debug mode), the function's code is enclosed in `try` statement;
      *      the corresponding `catch` block contains `console.log` statement to display message
      *      (namely, value of `debugMessage` setting) and details about error
-     *   * `debugMessage`: `String` (`Error in created function:`) - specifies message that should be shown before data about error
-     *      when the error is caught in debug mode
      *   * `debugFunc`: `String` (`console.log`) - expression specifying a function that should be used to process error
      *      when the error is caught in debug mode; the expression should be resolvable in global scope;
      *      debug message (value of `debugMessage` setting) and error object will be passed into the function
+     *   * `debugMessage`: `String` (`Error in created function:`) - specifies message that should be shown/passed
+     *      before data about error when the error is caught in debug mode
      *   * `expression`: `Boolean` (`false`) - specifies whether function's code is an expression;
      *      when `true` value is specified, `return` statement is added at the beginning of function's code
      *   * `paramNames`: `String` (`''`) - specifies names of function parameters
