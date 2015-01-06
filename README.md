@@ -12,7 +12,7 @@ Functions to create and call functions and evaluate expressions.
 
     npm install eva
 
-### [Component](https://github.com/component/component)
+### [Component](https://github.com/componentjs/component)
 
     component install gamtiq/eva
 
