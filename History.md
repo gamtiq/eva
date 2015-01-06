@@ -1,3 +1,7 @@
+### 0.1.3 / 2015-01-06
+
+* migration to [Component](https://github.com/componentjs/component) 1.0
+
 ### 0.1.2 / 2014-10-02
 
 * add `debug`, `debugFunc` and `debugMessage` settings for `createFunction` method
