@@ -4,7 +4,7 @@ Functions to create and call functions and evaluate expressions.
 
 [![NPM version](https://badge.fury.io/js/eva.png)](http://badge.fury.io/js/eva)
 [![Build Status](https://travis-ci.org/gamtiq/eva.png)](https://travis-ci.org/gamtiq/eva)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Built with Grunt](https://gruntjs.com/cdn/builtwith.png)](http://gruntjs.com/)
 
 ## Installation
 
@@ -12,21 +12,9 @@ Functions to create and call functions and evaluate expressions.
 
     npm install eva
 
-### [Component](https://github.com/componentjs/component)
-
-    component install gamtiq/eva
-
-### [Jam](http://jamjs.org)
-
-    jam install eva
-
 ### [Bower](http://bower.io)
 
     bower install eva
-
-### [SPM](http://spmjs.io)
-
-    spm install eva
 
 ### AMD, &lt;script&gt;
 
@@ -34,18 +22,10 @@ Use `dist/eva.js` or `dist/eva.min.js` (minified version).
 
 ## Usage
 
-### Node, Component, SPM
+### Node
 
 ```js
 var eva = require("eva");
-```
-
-### Jam
-
-```js
-require(["eva"], function(eva) {
-    ...
-});
 ```
 
 ### AMD
@@ -137,5 +117,5 @@ Add unit tests for any new or changed functionality.
 Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## License
-Copyright (c) 2014 Denis Sikuler  
+Copyright (c) 2014-2018 Denis Sikuler  
 Licensed under the MIT license.

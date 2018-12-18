@@ -10,7 +10,7 @@
             "outputSourceFiles": true
         },
         "systemName": "eva",
-        "copyright": "Copyright (c) 2014 Denis Sikuler",
+        "copyright": "Copyright (c) 2014-2018 Denis Sikuler",
         "theme": "spacelab",
         "linenums": true
     }

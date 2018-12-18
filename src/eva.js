@@ -2,7 +2,7 @@
  * eva
  * https://github.com/gamtiq/eva
  *
- * Copyright (c) 2014 Denis Sikuler
+ * Copyright (c) 2014-2018 Denis Sikuler
  * Licensed under the MIT license.
  */
 
