@@ -1,3 +1,8 @@
+### 1.0.0 / 2018-12-20
+
+* remove Jam and SPM support
+* add types declaration file
+
 ### 0.1.3 / 2015-01-06
 
 * migration to [Component](https://github.com/componentjs/component) 1.0
