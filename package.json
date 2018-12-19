@@ -20,6 +20,7 @@
     }
   ],
   "main": "src/eva",
+  "types": "./index.d.ts",
   "engines": {
     "node": ">= 0.10.0"
   },
