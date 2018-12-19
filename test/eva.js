@@ -310,7 +310,7 @@ describe("eva", function() {
             });
             
             function check(sCode, sMessage) {
-                /*jshint expr:true*/
+                /*jshint expr:true, sub:true*/
                 var settings = {debug: true};
                 if (sMessage) {
                     settings.debugMessage = sMessage;
@@ -358,7 +358,7 @@ describe("eva", function() {
             });
             
             function check(sCode, sDebugFunc) {
-                /*jshint expr:true*/
+                /*jshint expr:true, sub:true*/
                 var settings = {debug: true, debugFunc: sDebugFunc || "simpleErrorHandler.process"};
                 expect( createFunction(sCode, settings)() )
                     .be["undefined"];
@@ -621,6 +621,7 @@ describe("eva", function() {
     
     
     describe(".closure", function() {
+        /*jshint latedef:false */
         function sum() {
             /*jshint eqeqeq:false, eqnull:true, validthis:true*/
             var result = this === global || this == null || typeof this.initValue !== "number" ? 0 : this.initValue,
@@ -718,6 +719,7 @@ describe("eva", function() {
     
     
     describe(".map", function() {
+        /*jshint latedef:false */
         function getValue(value) {
             return function() {
                 return value;
